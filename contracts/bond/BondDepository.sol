@@ -724,7 +724,7 @@ contract BondDepository is Ownable {
         uint _maxDebt,
         uint _initialDebt
     ) external onlyPolicy() {
-        require( terms.controlVariable == 0, "Bonds must be initialized from 0" );
+        // require( terms.controlVariable == 0, "Bonds must be initialized from 0" );
         terms = Terms ({
             controlVariable: _controlVariable,
             vestingTerm: _vestingTerm,
@@ -742,7 +742,7 @@ contract BondDepository is Ownable {
     
     /* ======== POLICY FUNCTIONS ======== */
 
-    enum PARAMETER { VESTING, PAYOUT, FEE, DEBT }
+    enum PARAMETER { VESTING, PAYOUT, FEE, DEBT, MIN_PRICE }
     /**
      *  @notice set parameters for new bonds
      *  @param _parameter PARAMETER
@@ -761,6 +761,8 @@ contract BondDepository is Ownable {
             terms.fee = _input;
         } else if ( _parameter == PARAMETER.DEBT ) { // 3
             terms.maxDebt = _input;
+        } else if ( _parameter == PARAMETER.MIN_PRICE ) { // 4
+            terms.minimumPrice = _input;
         }
     }
 

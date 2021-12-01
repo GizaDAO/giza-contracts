@@ -736,7 +736,7 @@ contract AggregatorBondDepository is Ownable {
         uint _maxDebt,
         uint _initialDebt
     ) external onlyPolicy() {
-        require( currentDebt() == 0, "Debt must be 0 for initialization" );
+        // require( currentDebt() == 0, "Debt must be 0 for initialization" );
         terms = Terms ({
             controlVariable: _controlVariable,
             vestingTerm: _vestingTerm,
@@ -750,7 +750,7 @@ contract AggregatorBondDepository is Ownable {
 
     /* ======== POLICY FUNCTIONS ======== */
 
-    enum PARAMETER { VESTING, PAYOUT, DEBT }
+    enum PARAMETER { VESTING, PAYOUT, DEBT, MIN_PRICE }
     /**
      *  @notice set parameters for new bonds
      *  @param _parameter PARAMETER
@@ -763,8 +763,10 @@ contract AggregatorBondDepository is Ownable {
         } else if ( _parameter == PARAMETER.PAYOUT ) { // 1
             require( _input <= 1000, "Payout cannot be above 1 percent" );
             terms.maxPayout = _input;
-        } else if ( _parameter == PARAMETER.DEBT ) { // 3
+        } else if ( _parameter == PARAMETER.DEBT ) { // 2
             terms.maxDebt = _input;
+        } else if ( _parameter == PARAMETER.MIN_PRICE ) { // 3
+            terms.minimumPrice = _input;
         }
     }
 
